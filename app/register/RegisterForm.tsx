@@ -4,8 +4,12 @@ import Link from "next/link";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Input from "../components/inputs/Input";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 
 const RegisterForm = () => {
@@ -22,9 +26,40 @@ const RegisterForm = () => {
     },
   });
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-    console.log(data);
+
+    axios
+      .post("/api/register", data)
+      .then(() => {
+        toast.success("Account created");
+
+        signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        }).then((callback) => {
+          if (callback?.ok) {
+            setTimeout(() => {
+              router.push("/cart");
+              router.refresh();
+              toast.success("Logged in");
+            }, 1500);
+          }
+
+          if (callback?.error) {
+            toast.error(callback.error);
+          }
+        });
+      })
+      .catch(() => {
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

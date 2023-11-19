@@ -6,13 +6,18 @@ import Heading from "../components/Heading";
 import Input from "../components/inputs/Input";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { safeUser } from "@/types";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  currentUser: safeUser | null;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -27,6 +32,13 @@ const RegisterForm = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/cart");
+      router.refresh();
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -46,7 +58,7 @@ const RegisterForm = () => {
               router.push("/cart");
               router.refresh();
               toast.success("Logged in");
-            }, 1500);
+            }, 1000);
           }
 
           if (callback?.error) {
@@ -62,10 +74,21 @@ const RegisterForm = () => {
       });
   };
 
+  if (currentUser) {
+    return <p className="text-center">Logged in. Redirecting...</p>;
+  }
+
   return (
     <>
       <Heading title="Sign Up for E-Shop" />
-      <Button outline label="Continue with Google" icon={FaGoogle} onClick={() => {}} />
+      <Button
+        outline
+        label="Continue with Google"
+        icon={FaGoogle}
+        onClick={() => {
+          signIn("google");
+        }}
+      />
       <hr className="bg-slate-300 w-full h-px" />
       <Input
         id="name"

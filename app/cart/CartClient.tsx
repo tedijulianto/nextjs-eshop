@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/hooks/useCart";
-import { MdArrowBack } from "react-icons/md";
 import Heading from "../components/Heading";
 import Button from "../components/Button";
 import ItemContent from "./ItemContent";
+import { useCart } from "@/hooks/useCart";
+import { MdArrowBack } from "react-icons/md";
 import { formatPrice } from "@/utils/formatPrice";
+import { safeUser } from "@/types";
+import { useRouter } from "next/navigation";
 
-const CartClient = () => {
+interface CartClientProps {
+  currentUser: safeUser | null;
+}
+
+const CartClient: React.FC<CartClientProps> = ({ currentUser }) => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+
+  const router = useRouter();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -40,7 +48,7 @@ const CartClient = () => {
         })}
       </div>
       <div className="border-t-[1.5px] border-slate-200 py-4 flex justify-between gap-4">
-        <div className="w-[90px]">
+        <div className="w-[100px]">
           <Button
             label="Clear Cart"
             onClick={() => {
@@ -56,7 +64,13 @@ const CartClient = () => {
             <span>{formatPrice(cartTotalAmount)}</span>
           </div>
           <p className="text-slate-500">Taxes and shipping calculate at checkout</p>
-          <Button label="Checkout" onClick={() => {}} />
+          <Button
+            label={currentUser ? "Checkout" : "Login to checkout"}
+            outline={currentUser ? false : true}
+            onClick={() => {
+              currentUser ? router.push("/checkout") : router.push("/login");
+            }}
+          />
           <Link href={"/"} className="text-slate-500 flex items-center gap-1 mt-2">
             <MdArrowBack />
             <span>Continue shopping</span>

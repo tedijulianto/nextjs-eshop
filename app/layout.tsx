@@ -6,7 +6,7 @@ import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
   title: "E-commerce App",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} text-slate-700`}>
+      <body className={`${poppins.variable} font-poppins text-slate-700`}>
         <Toaster
           toastOptions={{
             style: {

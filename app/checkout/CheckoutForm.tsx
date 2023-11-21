@@ -63,7 +63,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, handleSetPaym
   return (
     <form onSubmit={handleSubmit} id="payment-form">
       <div className="mb-6">
-        <Heading title="Enter Your Details to complete checkout" />
+        <Heading title="Enter Your Details to complete checkout" center />
       </div>
       <h2 className="font-semibold mt-4 mb-2">Address Information</h2>
       <AddressElement options={{ mode: "shipping", allowedCountries: ["US", "ID"] }} />

@@ -4,6 +4,8 @@ import ListRating from "./ListRating";
 import { products } from "@/utils/products";
 import getProductById from "@/actions/getProductById";
 import NullData from "@/app/components/NullData";
+import AddRating from "./AddRating";
+import { getCurrentUser } from "@/actions/getCurrentUser";
 
 interface IParams {
   productId?: string;
@@ -11,6 +13,7 @@ interface IParams {
 
 const Product = async ({ params }: { params: IParams }) => {
   const product = await getProductById(params);
+  const user = await getCurrentUser();
 
   if (!product) {
     return <NullData title="Oops! There is no product" />;
@@ -20,7 +23,7 @@ const Product = async ({ params }: { params: IParams }) => {
     <div className="p-8">
       <Container>
         <ProductDetails product={product} />
-        <div>add rating</div>
+        <AddRating product={product} user={user} />
         <ListRating product={product} />
       </Container>
     </div>

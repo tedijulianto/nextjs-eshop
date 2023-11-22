@@ -10,7 +10,7 @@ interface IParams {
 const Order = async ({ params }: { params: IParams }) => {
   const order = await getOrderById(params);
 
-  if (!order) return <NullData title="No Order"></NullData>;
+  if (!order) return <NullData title="No Order" />;
 
   return (
     <div className="p-8">

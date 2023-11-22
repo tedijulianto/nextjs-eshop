@@ -60,14 +60,14 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
           <div>
             {params.row.paymentStatus === "pending" ? (
               <Status
-                text="pending"
+                text="PENDING"
                 icon={MdAccessTimeFilled}
                 bg="bg-slate-200"
                 color="text-slate-700"
               />
             ) : params.row.paymentStatus === "complete" ? (
               <Status
-                text="completed"
+                text="PAID"
                 icon={MdDeliveryDining}
                 bg="bg-green-200"
                 color="text-green-700"
@@ -86,20 +86,20 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
           <div>
             {params.row.deliveryStatus === "pending" ? (
               <Status
-                text="pending"
+                text="Pending"
                 icon={MdAccessTimeFilled}
                 bg="bg-slate-200"
                 color="text-slate-700"
               />
             ) : params.row.deliveryStatus === "dispatched" ? (
               <Status
-                text="dispatched"
+                text="Dispatched"
                 icon={MdDeliveryDining}
                 bg="bg-purple-200"
                 color="text-purple-700"
               />
             ) : params.row.deliveryStatus === "delivered" ? (
-              <Status text="delivered" icon={MdDone} bg="bg-green-200" color="text-green-700" />
+              <Status text="Delivered" icon={MdDone} bg="bg-green-200" color="text-green-700" />
             ) : null}
           </div>
         );
@@ -128,7 +128,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
             <ActionBtn
               icon={MdRemoveRedEye}
               onClick={() => {
-                router.push(`order/${params.row.id}`);
+                router.push(`/order/${params.row.id}`);
               }}
             />
           </div>
@@ -172,7 +172,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
   return (
     <div className="max-w-[1150px] m-auto text-xl">
       <div className="mb-4 mt-8">
-        <Heading title="Manage Orders" center />
+        <Heading title="Your Orders" center />
       </div>
       <div style={{ height: 600, width: "100%" }}>
         <DataGrid

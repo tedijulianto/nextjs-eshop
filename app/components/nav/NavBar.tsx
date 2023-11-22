@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "../Container";
 import CartCount from "./CartCount";
 import UserMenu from "./UserMenu";
+import Categories from "./Categories";
 import { Redressed } from "next/font/google";
 import { getCurrentUser } from "@/actions/getCurrentUser";
 
@@ -26,6 +27,7 @@ const NavBar = async () => {
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   );
 };

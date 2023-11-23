@@ -2,15 +2,15 @@ import prisma from "@/libs/prismadb";
 
 export interface IProductParams {
   category?: string | null;
-  searchTerm?: string | null;
+  search?: string | null;
 }
 
 export default async function getProducts(params: IProductParams) {
   try {
-    const { category, searchTerm } = params;
-    let searchString = searchTerm;
+    const { category, search } = params;
+    let searchString = search;
 
-    if (!searchTerm) {
+    if (!search) {
       searchString = "";
     }
 

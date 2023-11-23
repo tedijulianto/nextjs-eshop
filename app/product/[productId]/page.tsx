@@ -1,10 +1,9 @@
-import Container from "@/app/components/Container";
-import ProductDetails from "./ProductDetails";
-import ListRating from "./ListRating";
-import { products } from "@/utils/products";
-import getProductById from "@/actions/getProductById";
-import NullData from "@/app/components/NullData";
 import AddRating from "./AddRating";
+import ListRating from "./ListRating";
+import ProductDetails from "./ProductDetails";
+import NullData from "@/app/components/NullData";
+import Container from "@/app/components/Container";
+import getProductById from "@/actions/getProductById";
 import { getCurrentUser } from "@/actions/getCurrentUser";
 
 interface IParams {
@@ -15,9 +14,7 @@ const Product = async ({ params }: { params: IParams }) => {
   const product = await getProductById(params);
   const user = await getCurrentUser();
 
-  if (!product) {
-    return <NullData title="Oops! There is no product" />;
-  }
+  if (!product) return <NullData title="Oops! There is no product" />;
 
   return (
     <div className="p-8">

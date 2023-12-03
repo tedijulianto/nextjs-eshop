@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import toast from "react-hot-toast";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Input from "../components/inputs/Input";
-import toast from "react-hot-toast";
-import { useState, useEffect } from "react";
-import { FaGoogle } from "react-icons/fa";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import { safeUser } from "@/types";
+import { signIn } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 
 interface LoginFormProps {
   currentUser: safeUser | null;
@@ -33,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
 
   useEffect(() => {
     if (currentUser) {
-      router.push("/cart");
+      router.push("/");
       router.refresh();
     }
   }, []);
@@ -48,11 +49,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
       setIsLoading(false);
 
       if (callback?.ok) {
-        setTimeout(() => {
-          router.push("/cart");
-          router.refresh();
-          toast.success("Logged in");
-        }, 1000);
+        router.push("/");
+        router.refresh();
+        toast.success("Login successful");
       }
 
       if (callback?.error) {
@@ -60,10 +59,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
       }
     });
   };
-
-  if (currentUser) {
-    return <p className="text-center">Logged in. Redirecting...</p>;
-  }
 
   return (
     <>
@@ -73,28 +68,46 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
         label="Continue with Google"
         icon={FaGoogle}
         onClick={() => {
-          signIn("google");
+          signIn("google", { callbackUrl: "/" });
         }}
       />
       <hr className="bg-slate-300 w-full h-px" />
-      <Input
-        id="email"
-        label="Email"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
-      <Input
-        id="password"
-        label="Password"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        type="password"
-        required
-      />
-      <Button label={isLoading ? "Loading" : "Sign In"} onClick={handleSubmit(onSubmit)} />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full">
+        <Input
+          id="email"
+          label="Email"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <Input
+          id="password"
+          label="Password"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          type="password"
+          required
+        />
+        <Button
+          label={
+            isLoading ? (
+              <RotatingLines
+                strokeColor="white"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="24"
+                visible={true}
+              />
+            ) : (
+              "Sign In"
+            )
+          }
+          onClick={() => {}}
+          disabled={isLoading}
+        />
+      </form>
       <p className="text-sm">
         Don&apos;t have an account?{" "}
         <Link href="/register" className="text-sky-500 underline">

@@ -1,20 +1,21 @@
 "use client";
 
-import Button from "@/app/components/Button";
-import Heading from "@/app/components/Heading";
-import CategoryInput from "@/app/components/inputs/CategoryInput";
-import CustomCheckBox from "@/app/components/inputs/CustomCheckBox";
-import Input from "@/app/components/inputs/Input";
-import SelectColor from "@/app/components/inputs/SelectColor";
-import TextArea from "@/app/components/inputs/TextArea";
-import firebase from "@/libs/firebase";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { categories } from "@/utils/Categories";
+import firebase from "@/libs/firebase";
+import Button from "@/app/components/Button";
+import Heading from "@/app/components/Heading";
+import Input from "@/app/components/inputs/Input";
+import TextArea from "@/app/components/inputs/TextArea";
+import SelectColor from "@/app/components/inputs/SelectColor";
+import CategoryInput from "@/app/components/inputs/CategoryInput";
+import CustomCheckBox from "@/app/components/inputs/CustomCheckBox";
 import { colors } from "@/utils/Colors";
+import { useRouter } from "next/navigation";
+import { categories } from "@/utils/Categories";
+import { RotatingLines } from "react-loader-spinner";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
 export type ImageType = {
@@ -68,8 +69,6 @@ const AddProductForm = () => {
   }, [isProductCreated]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-
     setIsLoading(true);
 
     let uploadedImages: UploadedImageType[] = [];
@@ -272,7 +271,23 @@ const AddProductForm = () => {
           })}
         </div>
       </div>
-      <Button label={isLoading ? "Loading..." : "Add Product"} onClick={handleSubmit(onSubmit)} />
+      <Button
+        label={
+          isLoading ? (
+            <RotatingLines
+              strokeColor="white"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="24"
+              visible={true}
+            />
+          ) : (
+            "Add Product"
+          )
+        }
+        disabled={isLoading}
+        onClick={handleSubmit(onSubmit)}
+      />
     </>
   );
 };
